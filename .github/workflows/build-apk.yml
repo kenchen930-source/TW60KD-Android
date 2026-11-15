@@ -35,6 +35,18 @@ jobs:
           gradle-version: '8.10.2'
 
       
+      - name: Check AndroidManifest XML
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          path = "app/src/main/AndroidManifest.xml"
+          data = open(path, "rb").read()
+          print("File size:", len(data))
+          print("First bytes:", repr(data[:100]))
+          ET.parse(path)
+          print("XML syntax OK")
+          PY
+
       - name: Build APK
         run: gradle assembleDebug --no-daemon --stacktrace --info
 
